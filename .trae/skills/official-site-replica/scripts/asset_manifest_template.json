@@ -1,0 +1,49 @@
+{
+  "target_url": "",
+  "resolved_url": "",
+  "local_preview_url": "http://localhost:8123/",
+  "entry": {
+    "official_pathname": "/",
+    "local_entry_file": "index.html",
+    "notes": "Use index.html and serve from / when the official page is the root route."
+  },
+  "runtime": {
+    "frameworks_or_libraries": [],
+    "entry_scripts": [],
+    "stylesheets": [],
+    "inline_boot_config_notes": ""
+  },
+  "assets": {
+    "html": [],
+    "css": [],
+    "javascript": [],
+    "dynamic_chunks": [],
+    "images": [],
+    "video": [],
+    "fonts": [],
+    "lottie_or_rive": [],
+    "models": [],
+    "textures": {
+      "ktx2": [],
+      "webp": [],
+      "png_or_jpg": [],
+      "hdr_or_exr": []
+    },
+    "decoders_or_wasm": [],
+    "workers": [],
+    "static_json_data": []
+  },
+  "verification": {
+    "console_exceptions": [],
+    "failed_requests": [],
+    "bad_responses": [],
+    "timeline_timestamps": [1, 3, 6, 10],
+    "matched_stable_timestamp": null,
+    "pixel_diff_ratio": null,
+    "scroll_height_official": null,
+    "scroll_height_local": null,
+    "dominant_visible_element_official": "",
+    "dominant_visible_element_local": ""
+  },
+  "fallbacks": []
+}

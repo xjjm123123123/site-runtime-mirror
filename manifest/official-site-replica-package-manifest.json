@@ -1,0 +1,33 @@
+{
+  "skill": "official-site-replica",
+  "description": "Recreates official websites by replaying original runtime assets and scripts.",
+  "generated_at": "2026-08-18",
+  "install_package": {
+    "path": "official-site-replica.skill",
+    "size": 21642,
+    "sha256": "c00164490d910fc41a56f96226b31006d8712c6714ae025397ff09c7d15847da",
+    "includes_evals": false
+  },
+  "source_package": {
+    "path": "official-site-replica-skill-source.zip",
+    "size": 22529,
+    "sha256": "517fb011781d1ba612bff48baca60ff608ec4daec69473800a3b2a3a62d7d5ba",
+    "includes_evals": true
+  },
+  "files": [
+    "README.md",
+    "SKILL.md",
+    "evals/evals.json",
+    "references/pitfalls.md",
+    "references/runtime-acquisition.md",
+    "references/verification-checklist.md",
+    "scripts/asset_manifest_template.json",
+    "scripts/timeline_compare.py"
+  ],
+  "notes": [
+    "README.md is included for GitHub usage.",
+    "runtime-acquisition.md includes user-browser variant capture guidance.",
+    "pitfalls.md includes anonymous-vs-logged-in variant mismatch guidance.",
+    "The .skill package excludes evals; the source zip includes evals."
+  ]
+}

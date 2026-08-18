@@ -1,0 +1,20 @@
+{
+  "skill_name": "official-site-replica",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "复刻这个官网首页：https://example-animated-brand-site.test/，要保留加载页、Canvas 动效和滚动动画，不要自己按风格重写。",
+      "expected_output": "The agent should capture the official runtime, mirror dynamic assets, serve from the correct route, verify no critical 4xx/console errors, and compare multiple timeline frames."
+    },
+    {
+      "id": 2,
+      "prompt": "这个本地复刻版首屏不像官网，但控制台没报错。继续修到首屏和官网状态一致。",
+      "expected_output": "The agent should suspect route/state/timeline mismatch, compare official and local runtime state, test root index.html if the official page is /, and avoid hand-written replacement animation."
+    },
+    {
+      "id": 3,
+      "prompt": "官网里有 WebGL 模型、KTX2 纹理、Rive 和 Lottie，帮我打包 H5 源码，打开后要和官网一样。",
+      "expected_output": "The agent should include models, textures, Rive/Lottie, decoders, fonts, workers, scripts, README, and a verification summary. The package should not include temporary debug files."
+    }
+  ]
+}
