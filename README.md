@@ -1,59 +1,41 @@
-# Official Site Replica Skill
+# Site Runtime Mirror
 
-This repository contains the standalone TRAE Skill package for faithful official-site runtime replay and website replica workflows.
+`Site Runtime Mirror` is a TRAE Skill for rebuilding complex websites by carrying over the original front-end runtime instead of drawing a lookalike from screenshots.
 
-## Install package
+It is meant for the awkward cases: pages with loaders, GSAP timelines, WebGL canvases, Rive files, Lottie JSON, 3D models, custom fonts, lazy chunks, route-dependent state, or scroll-linked animation. The job is to make the original code path run locally and then prove it with browser evidence.
 
-- `dist/official-site-replica.skill` is the installable Skill package.
-- `dist/official-site-replica-skill-source.zip` is the full source package, including evals.
-- `manifest/official-site-replica-package-manifest.json` lists package contents and SHA256 hashes.
+## Why this exists
 
-## Source layout
+Most website “replicas” fail in the same way: they copy the visible frame but lose the behavior that made the site feel alive. This Skill keeps the work anchored to the source runtime: the real HTML, scripts, styles, assets, route assumptions, and browser state that produced the target page.
 
-```text
-.trae/skills/official-site-replica/
-  SKILL.md
-  README.md
-  references/
-  scripts/
-  evals/
-```
+Use it when visual similarity is not enough and the replica needs to preserve the source site's motion system, loading sequence, interaction model, and rendered state.
 
----
+## What it helps with
 
-# Official Site Replica Skill
-
-`official-site-replica` is a TRAE Skill for faithful website reproduction. It is designed for cases where a user wants a website, homepage, landing page, or H5 experience to match the source site as closely as possible, especially when the original site contains complex runtime behavior such as loaders, Canvas/WebGL, Rive, Lottie, 3D models, videos, lazy-loaded chunks, custom fonts, route-sensitive state, or scroll-driven animation.
-
-The core idea is simple: do not recreate the look from screenshots first. Capture and replay the original front-end runtime whenever possible, then verify the local result in a real browser.
-
-## What it does
-
-- Captures the source site's real HTML, CSS, JavaScript, chunks, preload entries, runtime config, and dynamic network graph.
-- Mirrors visual/runtime assets locally, including images, fonts, videos, animation JSON, models, textures, decoders, workers, WASM files, and route-triggered resources.
-- Preserves the official route and browser state assumptions, especially when the source page is served from `/`.
-- Separates visual/runtime dependencies from analytics, tracking, chat widgets, and other non-visual noise.
-- Verifies the local replica with browser evidence instead of relying on a single screenshot.
-- Supports user-browser captures for logged-in, personalized, A/B-tested, or CMS-variant pages.
+- Capturing the page's real runtime graph: HTML, CSS, JavaScript, chunks, preload entries, inline config, and dynamic requests.
+- Mirroring visual assets locally: images, fonts, videos, animation files, models, textures, decoders, workers, WASM, and route-triggered resources.
+- Replaying source behavior through HTTP instead of relying on `file://`, which breaks many modern front-end runtimes.
+- Separating visual dependencies from analytics, tracking, chat widgets, and other non-essential noise.
+- Comparing official and local pages with runtime evidence: console/network state, canvas/video/image counts, scroll states, and timeline snapshots.
+- Capturing the exact variant a user sees in their own browser when login state, cookies, CMS content, region, or A/B buckets matter.
 
 ## When to use it
 
-Use this Skill when the user asks for:
+Use this Skill for requests such as:
 
-- `1:1` website or homepage reproduction
-- faithful official-site cloning
-- preserving official loading animation or scroll animation
-- reproducing Canvas, WebGL, Rive, Lottie, or 3D model behavior
-- debugging why a local replica does not match the source site
-- comparing official and local timeline states
-- capturing the exact page variant the user sees in their own Chrome browser
+- “1:1 复刻这个官网”
+- “动效要和原站一样，不要自己重做”
+- “把这个 WebGL / Rive / Lottie 页面本地化”
+- “这个复刻版和官网不一致，继续修到一致”
+- “用我 Chrome 里看到的登录态页面做准”
+- “把官网源码打包成可运行 H5 项目”
 
-Do not use it for ordinary static landing pages, generic redesigns, or “inspired by” visual concepts where a new implementation is acceptable.
+Do not use it for generic landing pages, mood-board-inspired designs, or new visual concepts where a fresh implementation is acceptable.
 
-## Package contents
+## Package layout
 
 ```text
-official-site-replica/
+.trae/skills/official-site-replica/
   SKILL.md
   README.md
   references/
@@ -67,50 +49,43 @@ official-site-replica/
     evals.json
 ```
 
-## Workflow summary
+The installed folder still uses the historical slug `official-site-replica` for compatibility. The public-facing name is now `Site Runtime Mirror`.
 
-1. Fetch and inspect the official HTML.
-2. Run the official page in a browser and capture the real network graph.
-3. Identify the rendering surface: DOM, Canvas, WebGL, Rive, Lottie, video, or hybrid.
-4. Mirror runtime and visual assets locally while preserving path assumptions.
-5. Serve the replica through HTTP, preferably from `/` with `index.html` when the source page is also `/`.
-6. Compare official and local states at multiple timestamps, not just one screenshot.
-7. Fix missing resources and state mismatches before reporting completion.
+## Typical workflow
 
-## Logged-in and A/B variants
+1. Inspect the official HTML and identify the runtime entry points.
+2. Capture the page in a browser to see the real network graph, dynamic chunks, animation files, media, and runtime state.
+3. Identify what actually renders the target effect: DOM, Canvas, WebGL, Rive, Lottie, video, or a mix of several layers.
+4. Mirror the required assets locally while preserving path and route assumptions.
+5. Serve the result over HTTP, preferably from `/` with `index.html` when the source page also runs from `/`.
+6. Compare official and local states at multiple moments instead of trusting one screenshot.
+7. Fix unexplained missing resources, console errors, stuck loaders, and state mismatches before calling the replica finished.
 
-Some sites serve different pages depending on login status, cookies, localStorage, region, viewport, browser profile, or experiment bucket. For those cases, an anonymous headless capture may not match what the user sees.
+## Logged-in variants
 
-When the user asks to match the page in their Chrome browser:
+Some sites change by login state, cookies, localStorage, region, viewport, browser profile, or experiment bucket. In those cases, an anonymous headless capture may not match the page the user is actually judging.
 
-- use the external Chrome browser as the source of truth;
-- capture `window.__globalVars__`, experiment IDs, viewport, rendered DOM, loaded images, stylesheets, resource entries, and visible text;
-- avoid capturing or publishing secrets, cookies, tokens, or private data that is not needed for visual reproduction;
-- prefer a sanitized rendered-DOM snapshot when live authenticated APIs cannot or should not be replayed locally.
+When the user's Chrome view is the target, treat that browser session as the source of truth. Capture only the visual/runtime inputs needed for reproduction, such as rendered DOM, loaded resources, viewport, visible text, and safe runtime config. Do not store credentials, cookies, private tokens, or unrelated personal data.
 
-## Verification expectations
+## Verification bar
 
-At minimum, verify:
+A replica is not done just because the page opens. At minimum, check:
 
-- no unexplained local 404/5xx responses;
-- no runtime exceptions;
-- expected visual assets load;
-- expected canvas/video/image counts match or have an explained difference;
-- `scrollHeight`, visible section, and key text match the target state;
-- timeline frames match for animation-heavy pages.
+- no unexplained local `404`, `403`, or `5xx` responses;
+- no unhandled runtime exceptions;
+- expected canvas, video, image, model, font, and animation assets are present;
+- key DOM state, route, viewport, scroll position, and visible text match the target state;
+- animation-heavy pages are compared across several timeline frames;
+- authenticated or personalized snapshots remain stable without calling private live APIs again.
 
-For personalized snapshot replicas, also verify that the local page keeps the captured state without calling authenticated APIs again.
+## Distributables
 
-## Packaging
+- `dist/official-site-replica.skill`: installable Skill package, kept under the original slug for compatibility.
+- `dist/official-site-replica-skill-source.zip`: source package, including evals.
+- `manifest/official-site-replica-package-manifest.json`: package inventory and checksums.
 
-The distributable package can be provided as:
+## Notes on usage
 
-- `official-site-replica.skill` for direct Skill installation;
-- `official-site-replica-skill-source.zip` for full source review, including `evals/`;
-- `official-site-replica-package-manifest.json` for package integrity and file listing.
+Mirrored website assets may be copyrighted or license-restricted. Keep replicas private unless the user has permission to redistribute the source site's scripts, fonts, images, videos, models, and animation files.
 
-## Safety
-
-Mirrored official assets may be copyrighted or license-restricted. Keep generated replicas private unless the user has permission to redistribute the source site's scripts, fonts, images, videos, models, and animation files.
-
-Do not store credentials, cookies, private tokens, or user-sensitive data in the Skill itself. The Skill should contain reusable workflow instructions only.
+This Skill is a workflow guide, not a bundle of third-party site assets. The repository stores reusable instructions, verification scripts, and checklists only.

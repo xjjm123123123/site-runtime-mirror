@@ -1,9 +1,9 @@
 ---
-name: "official-site-replica"
-description: "Recreates official websites by replaying original runtime assets and scripts. Invoke when user asks for 1:1 site cloning with animations, loaders, Canvas/WebGL/Rive/3D models."
+name: "site-runtime-mirror"
+description: "Rebuild complex websites by mirroring and replaying the source front-end runtime. Use when the user needs a 1:1 site copy that preserves loaders, scroll timelines, Canvas/WebGL, Rive, Lottie, 3D models, route state, or the exact page variant visible in their browser."
 ---
 
-# Official Site Replica
+# Site Runtime Mirror
 
 Use this skill when the user asks to reproduce an existing website as faithfully as possible, especially when the target includes animated loading screens, Webflow/GSAP interactions, Canvas/WebGL/WebGPU, Rive animations, GLB/GLTF models, shader effects, compressed textures, custom fonts, or complex scroll-driven motion.
 
