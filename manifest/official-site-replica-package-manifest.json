@@ -1,6 +1,7 @@
 {
-  "skill": "official-site-replica",
-  "description": "Recreates official websites by replaying original runtime assets and scripts.",
+  "skill": "site-runtime-mirror",
+  "display_name": "Site Runtime Mirror",
+  "description": "Rebuild complex websites by mirroring and replaying the source front-end runtime.",
   "generated_at": "2026-08-18",
   "install_package": {
     "path": "official-site-replica.skill",
@@ -26,6 +27,7 @@
   ],
   "notes": [
     "README.md is included for GitHub usage.",
+    "Distribution filenames keep the historical official-site-replica slug for compatibility.",
     "runtime-acquisition.md includes user-browser variant capture guidance.",
     "pitfalls.md includes anonymous-vs-logged-in variant mismatch guidance.",
     "The .skill package excludes evals; the source zip includes evals."
